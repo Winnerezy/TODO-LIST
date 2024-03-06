@@ -11,13 +11,13 @@ return
 else{ //if input is added add the input to the array
 inputs.value.push(textInput.value);
 textInput.value  = ""; //input value becomes empty string
-console.log(inputs.value)
 }
 
 }
-let complete = ref(0) //initializing 
-const completed = ()=>{
-  complete.value++
+let complete = ref(0) //initializing the complete value and assigning it to 0
+const completed = (index)=>{
+  complete.value++ //incrementing the completed task number
+  inputs.value.splice(index, 1)
 }
 
 //method to delete text
@@ -27,16 +27,19 @@ const del = (index) =>{
 </script>
 
 <template>
-    <section>
+    <section id="main">
     <header>
         <input type="text" @keydown.enter="addText" v-model="textInput">
     </header>
-    <main>{{ complete }}</main>
+    <div id="completedCount">
+        <div>{{ complete }} Taks Completed</div>
+    </div>
+    
     <ul v-for="(input, index) in inputs" :key="index">
     <div>
             <li>{{ input }}</li>
             <button @click="del(index)">Delete</button>
-            <input type="checkbox" name="completed" id="completed" v-on:change="completed">
+            <input type="checkbox" name="completed" id="completed" @click="completed">
     </div>
 </ul>
   
@@ -51,7 +54,17 @@ header{
     align-items: center;
     justify-content: baseline;
 }
-section{
+
+#completedCount{
+    font-family: Arial;
+    font-weight: bold;
+    align-items: start;
+    justify-content: center;
+    display: flex;
+    border: none;
+}
+
+#main{
     position: relative;
     top: 50px;
 }
