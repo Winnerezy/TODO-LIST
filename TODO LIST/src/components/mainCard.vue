@@ -14,11 +14,6 @@ textInput.value  = ""; //input value becomes empty string
 }
 
 }
-let complete = ref(0) //initializing the complete value and assigning it to 0
-const completed = (index)=>{
-  complete.value++ //incrementing the completed task number
-  inputs.value.splice(index, 1)
-}
 
 //method to delete text
 const del = (index) =>{
@@ -39,7 +34,7 @@ const del = (index) =>{
     <div>
             <li>{{ input }}</li>
             <button @click="del(index)">Delete</button>
-            <input type="checkbox" name="completed" id="completed" @click="completed">
+            <input type="checkbox" id="completed" @click="completed" v-model="completedCheck">
     </div>
 </ul>
   
