@@ -50,8 +50,10 @@ const del = (index) =>{
 <ul id="tasks">
     <div v-for="(input, index) in inputs" :key="index" :class="{'completed': input-completed}" id="singleTask" style="max-width: 350px;">
             <li>{{ input }}</li>
+            <section id="info">
             <button @click="del(index)">Delete</button>
             <input type="radio" id="completed" @change="completed(index)">
+            </section>
     </div>
 </ul>
 
@@ -118,12 +120,23 @@ li{
     max-width: 200px;
 }
 
+#info{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    justify-content: center;;
+}
+
 button{
-    border: none;
-    background-color: white;
-    height: 20px;
+    width: 70px;
+    text-align: center;
+    background-color:transparent;
+    font-weight: bold;
+    height: 25px;
     font-family: 'Arial';
     border-radius: 10px;
+    color: white;
+    border: 2px solid white;
 }
 
 #completed{
