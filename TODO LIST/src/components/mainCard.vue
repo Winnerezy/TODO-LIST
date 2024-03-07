@@ -40,13 +40,15 @@ const del = (index) =>{
 <template>
     <header>
         <input type="text" @keydown.enter="addText" v-model="textInput">
-    </header>
-    <div id="completedCount">
+
+        <div id="completedCount">
         <div>{{ completedCheck }} Tasks Completed</div>
-    </div>
+        </div>
+    </header>
+
 
 <ul id="tasks">
-    <div v-for="(input, index) in inputs" :key="index" :class="{'completed': input-completed}" id="singleTask">
+    <div v-for="(input, index) in inputs" :key="index" :class="{'completed': input-completed}" id="singleTask" style="max-width: 350px;">
             <li>{{ input }}</li>
             <button @click="del(index)">Delete</button>
             <input type="radio" id="completed" @change="completed(index)">
@@ -59,26 +61,24 @@ const del = (index) =>{
 
 header{
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;;
+    justify-content: center;
 }
 
 #completedCount{
-    display: grid;
+    display: flex;
     font-family: Arial;
     font-weight: bold;
     border: none;
-    place-content: center;
+    align-items: center;
+    justify-content: center;
     border: 2px solid white;
     padding: 10px;
     border-radius: 10px;
     margin-top: 30px;
     margin-bottom: 30px;
-}
-
-#main{
-    position: relative;
-    top: 50px;
+    width: 200px
 }
 
 input{
@@ -112,7 +112,6 @@ ul{
     border: 2px solid white;
     padding: 15px;
     border-radius: 10px;
-    max-width: 350px;
 }
 
 li{
