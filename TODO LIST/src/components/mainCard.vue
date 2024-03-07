@@ -1,6 +1,16 @@
 <script setup>
 import { ref } from 'vue';
-let inputs = ref([]); //intialize the text array as
+let inputs = ref([]);
+let completedCheck = ref(0)
+
+const storedTasks = localStorage.getItem('storedTasks') //store the tasks in the browser
+const storedCompletedCount = localStorage.getItem('storedCompletedCount');
+if(storedTasks && storedCompletedCount){
+    inputs.value = JSON.parse(storedTasks)
+    console.log(inputs.value)
+    completedCheck.value =  parseInt(storedCompletedCount)
+}
+
 let textInput = ref(''); //initialize the text input as empty string
 
 //method to add text to the array
@@ -11,35 +21,38 @@ return
 else{ //if input is added add the input to the array
 inputs.value.push(textInput.value);
 textInput.value  = ""; //input value becomes empty string
+localStorage.setItem('storedTasks', JSON.stringify(inputs.value))
+}
 }
 
-}
 
+const completed = (index) =>{
+    completedCheck.value++
+    inputs.value.splice(index, 1)
+    localStorage.setItem('storedCompletedCount', completedCheck.value)
+    localStorage.setItem('storedTasks', JSON.stringify(inputs.value))
+}
 //method to delete text
 const del = (index) =>{
     inputs.value.splice(index, 1) //delete the text with index of the current index 
 }
 </script>
-
 <template>
-    <section id="main">
     <header>
         <input type="text" @keydown.enter="addText" v-model="textInput">
     </header>
     <div id="completedCount">
-        <div>{{ complete }} Taks Completed</div>
+        <div>{{ completedCheck }} Tasks Completed</div>
     </div>
-    
-    <ul v-for="(input, index) in inputs" :key="index">
-    <div>
+
+<ul id="tasks">
+    <div v-for="(input, index) in inputs" :key="index" :class="{'completed': input-completed}" id="singleTask">
             <li>{{ input }}</li>
             <button @click="del(index)">Delete</button>
-            <input type="checkbox" id="completed" @click="completed" v-model="completedCheck">
+            <input type="radio" id="completed" @change="completed(index)">
     </div>
 </ul>
-  
-    </section>
-      
+
 </template>
 
 <style scoped>
@@ -47,16 +60,20 @@ const del = (index) =>{
 header{
     display: flex;
     align-items: center;
-    justify-content: baseline;
+    justify-content: center;;
 }
 
 #completedCount{
+    display: grid;
     font-family: Arial;
     font-weight: bold;
-    align-items: start;
-    justify-content: center;
-    display: flex;
     border: none;
+    place-content: center;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 #main{
@@ -71,6 +88,12 @@ input{
     height: 25px;
 }
 
+#tasks{
+    display: grid;
+    grid-template-columns: auto auto auto ;
+    gap: 10px
+}
+
 ul{
     display: flex;
     align-items: center;
@@ -78,7 +101,8 @@ ul{
     list-style-type: none;
     padding: 0;
 }
-div{
+
+#singleTask{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,6 +118,7 @@ div{
 li{
     max-width: 200px;
 }
+
 button{
     border: none;
     background-color: white;
